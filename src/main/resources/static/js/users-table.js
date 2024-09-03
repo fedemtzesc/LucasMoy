@@ -8,10 +8,7 @@ async function loadUsers(){
       //const usrResponse = await fetch('api/get-user-by-id/7777', {
       const usrResponse = await fetch('api/users', {
         method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        headers: getHeaders(),
       });
       const usuarios = await usrResponse.json();
       let usrsHTML='';
@@ -44,12 +41,17 @@ async function deleteUser(id){
     }
     const usrResponse = await fetch('api/users/' + id, {
         method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        headers: getHeaders(),
     });
     location.reload();
+}
+
+function getHeaders(){
+    return {
+             'Accept': 'application/json',
+             'Content-Type': 'application/json',
+             'Authorization': localStorage.token
+           };
 }
 
 /* PLANTILLA FETCH

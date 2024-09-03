@@ -2,8 +2,10 @@ package com.fdxsoft.lucas.controllers;
 
 import com.fdxsoft.lucas.models.UserModel;
 import com.fdxsoft.lucas.services.UserService;
+import com.fdxsoft.lucas.utils.JWTUtil;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +16,10 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserController {
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private JWTUtil jwtUtil;
 
     //A partir de aqui, empiezan los metodos que retornan datos fijos
     @GetMapping("/test-text")
@@ -69,12 +74,18 @@ public class UserController {
 
     // A partir de Aqui empiezan los metodos que accesan a la BD
     @RequestMapping(value = "users")
-    public List<UserModel> getUserLList(){
+    public List<UserModel> getUserLList(@RequestHeader(value = "Authorization") String token){
+        if(jwtUtil.isValidToken(token)){
+            return new ArrayList<>();
+        }
         return userService.getUsers();
     }
 
     @RequestMapping(value = "users/{id}", method = RequestMethod.DELETE)
-    public boolean deleteUserByID(@PathVariable Long id){
+    public boolean deleteUserByID(@PathVariable Long id, @RequestHeader(value = "Authorization") String token){
+        if(!jwtUtil.isValidToken(token)){
+            return false;
+        }
         return userService.deleteUserByID(id);
     }
 

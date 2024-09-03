@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -93,5 +94,10 @@ public class JWTUtil {
                 .parseClaimsJws(jwt).getBody();
 
         return claims.getId();
+    }
+
+    public boolean isValidToken(String token){
+        String userID = jwtUtil.getKey(token);
+        return userID!=null;
     }
 }

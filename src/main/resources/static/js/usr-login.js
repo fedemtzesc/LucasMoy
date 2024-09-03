@@ -20,8 +20,9 @@ async function initSession(){
       //const loginResponse = await usrResponse.json();
       const loginResponse = await usrResponse.text();
       console.log(loginResponse)
-      alert('Bienvenido al Sistema! TOKEN: ');
+
       if(loginResponse!='FAIL'){
+        alert('Bienvenido al Sistema!');
         localStorage.token = loginResponse;
         localStorage.email = datos.email;
         window.location.href = 'users.html';
