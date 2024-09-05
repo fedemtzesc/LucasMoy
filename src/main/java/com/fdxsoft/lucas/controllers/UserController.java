@@ -6,6 +6,7 @@ import com.fdxsoft.lucas.utils.JWTUtil;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import lombok.val;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,7 +76,7 @@ public class UserController {
     // A partir de Aqui empiezan los metodos que accesan a la BD
     @RequestMapping(value = "users")
     public List<UserModel> getUserLList(@RequestHeader(value = "Authorization") String token){
-        if(jwtUtil.isValidToken(token)){
+        if(!jwtUtil.isValidToken(token)){
             return new ArrayList<>();
         }
         return userService.getUsers();
