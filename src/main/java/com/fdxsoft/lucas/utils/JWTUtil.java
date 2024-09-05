@@ -1,9 +1,6 @@
 package com.fdxsoft.lucas.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +94,12 @@ public class JWTUtil {
     }
 
     public boolean isValidToken(String token){
-        String userID = jwtUtil.getKey(token);
+        String userID;
+        try {
+            userID = this.getKey(token);
+        }catch(ExpiredJwtException exp){
+            return false;
+        }
         return userID!=null;
     }
 }
